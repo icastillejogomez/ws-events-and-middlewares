@@ -1,0 +1,29 @@
+{
+  "name": "ws-events",
+  "version": "1.0.0",
+  "description": "ws module wrapper to provide events",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/icastillejogomez/ws-events.git"
+  },
+  "keywords": [
+    "node",
+    "javascript",
+    "ws",
+    "websocket",
+    "events"
+  ],
+  "author": "Ignacio F. Castillejo Gómez",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/icastillejogomez/ws-events/issues"
+  },
+  "homepage": "https://github.com/icastillejogomez/ws-events#readme",
+  "dependencies": {
+    "component-emitter": "^1.2.1"
+  }
+}
