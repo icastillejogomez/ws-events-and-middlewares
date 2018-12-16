@@ -39,7 +39,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
       args = [json.t].concat(json.a)
       if (json.c) {
         args = args.concat(function () {
-          sock.send(JSON.stringify({ callback: json.c, a: Object.values(arguments) }))
+          sock.send(JSON.stringify({ callback: json.c, a: Array.from(arguments) }))
         })
       }
     } catch (e) {
@@ -68,8 +68,8 @@ module.exports = function wsEvents (sock, middlewares = []) {
     }
   }
 
-  function onclose (e) {
-    listeners.emit('close', e)
+  function onclose () {
+    listeners.emit.apply(sock, [['close'].concat(Array.from(arguments))])
   }
 
   sock.onmessage = onmessage
