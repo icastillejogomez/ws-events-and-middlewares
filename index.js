@@ -7,6 +7,7 @@ isFunction = function (obj) {
 }
 
 let callbacks = {}
+let rooms = {}
 
 module.exports = function wsEvents (sock, middlewares = []) {
   var listeners = new Emitter()
@@ -73,6 +74,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function onclose (event) {
+    // TODO: sacamos el cliente 
     listeners.emit('close', event)
   }
 
@@ -108,6 +110,52 @@ module.exports = function wsEvents (sock, middlewares = []) {
     return events
   }
 
+  function join (room) {
+    console.log(`[ws-events] join: ${room}`)
+    if (!Array.isArray(rooms[room]) {
+      rooms[room] = []
+    }
+    rooms[room].push(socket.id)
+
+    console.log('rooms:')
+    console.log(JSON.stringify(rooms, null, 2))
+  }
+
+  function leave (room) {
+    console.log(`[ws-events] leave: ${room}`)
+    if (!Array.isArray(rooms[room]) {
+      return 
+    }
+
+    const index = rooms[room].indexOf(socket.id)
+    if (index > -1) {
+      rooms[room].splice(index, 1)
+    }
+    console.log('rooms:')
+    console.log(JSON.stringify(rooms, null, 2))
+  }
+
+  function leaveAll () {
+    console.log(`[ws-events] leaveAll`)
+    Object.keys(rooms).map(room => {
+      const index = rooms[room].indexOf(socket.id)
+      if (index > -1) {
+        rooms[room].splice(index, 1)
+      }
+    })
+    console.log('rooms:')
+    console.log(JSON.stringify(rooms, null, 2))
+  }
+
+  function to (room) {
+    
+    return {
+      emit: function () {
+
+      }
+    }
+  }
+
   var events = Object.create(sock)
   events.socket = sock
   events.emit = emit
@@ -115,6 +163,10 @@ module.exports = function wsEvents (sock, middlewares = []) {
   events.off = off
   events.listeners = listeners.listeners.bind(listeners)
   events.hasListeners = listeners.hasListeners.bind(listeners)
+  events.join = join
+  events.leave = leave
+  events.leaveAll = leaveAll
+  events.to = to
 
   return events
 }
