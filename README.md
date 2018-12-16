@@ -1,4 +1,4 @@
-# ws-events
+# ws-events-and-middlewares
 
 Esta libreria esta concebida como un wrapper del modulo ws de node. Seguro que muchos de vosotros cuando usásteis la tecnología de websocket por primera vez lo hicísteis a traves de la maravillosa libreria de Socket.io
 
