@@ -84,8 +84,7 @@ o
 
 ## Construyendo el servidor con eventos y middlewares
 
+## Construyendo el servidor con eventos, middlewares y salas de broadcast
 
 ### TODO list
 
-1. Manage all socket clients and set unique identifier for each of them.
-2. Rooms feature
