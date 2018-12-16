@@ -171,10 +171,6 @@ module.exports = function wsEvents (sock, middlewares = []) {
     }
   }
 
-  function clients () {
-    return clients
-  }
-
   var events = Object.create(sock)
   events.emit = emit
   events.on = on
@@ -186,13 +182,12 @@ module.exports = function wsEvents (sock, middlewares = []) {
   events.leaveAll = leaveAll
   events.to = to
   events.toAll = toAll
-  events.clients = 
+
 
   // Guarados el nuevo cliente
   if (sock.id) {
     clients[sock.id] = sock
   }
   
-
   return events
 }
