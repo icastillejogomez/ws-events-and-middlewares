@@ -77,7 +77,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function onclose (event) {
-    delete clients[events.id]
+    delete clients[mySocketId]
     listeners.emit('close', event)
   }
 
@@ -117,7 +117,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
     if (!Array.isArray(rooms[room])) {
       rooms[room] = []
     }
-    rooms[room].push(events.id)
+    rooms[room].push(mySocketId)
   }
 
   function leave (room) {
@@ -125,7 +125,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
       return
     }
 
-    const index = rooms[room].indexOf(events.id)
+    const index = rooms[room].indexOf(mySocketId)
     if (index > -1) {
       rooms[room].splice(index, 1)
     }
@@ -133,7 +133,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
 
   function leaveAll () {
     Object.keys(rooms).map(room => {
-      const index = rooms[room].indexOf(events.id)
+      const index = rooms[room].indexOf(mySocketId)
       if (index > -1) {
         rooms[room].splice(index, 1)
       }
