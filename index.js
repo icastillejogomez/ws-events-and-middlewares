@@ -112,7 +112,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
 
   function join (room) {
     console.log(`[ws-events] join: ${room}`)
-    if (!Array.isArray(rooms[room]) {
+    if (!Array.isArray(rooms[room])) {
       rooms[room] = []
     }
     rooms[room].push(socket.id)
@@ -123,7 +123,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
 
   function leave (room) {
     console.log(`[ws-events] leave: ${room}`)
-    if (!Array.isArray(rooms[room]) {
+    if (!Array.isArray(rooms[room])) {
       return 
     }
 
@@ -148,7 +148,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function to (room) {
-    
+
     return {
       emit: function () {
 
