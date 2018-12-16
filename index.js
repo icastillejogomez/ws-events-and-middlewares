@@ -85,7 +85,6 @@ module.exports = function wsEvents (sock, middlewares = []) {
   sock.onclose = onclose
 
   function emit (type) {
-    console.log('DEGUG LOG: emit')
     var args = Array.prototype.slice.call(arguments, 1)
     whenOpen(function () {
       // Comprobamos si este mensaje lleva callback de vuelta
