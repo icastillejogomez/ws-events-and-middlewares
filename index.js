@@ -14,6 +14,7 @@ let clients = {}
 module.exports = function wsEvents (sock, middlewares = []) {
   var listeners = new Emitter()
   var onopenHandlers = []
+  let mySocketId = null
 
   async function onmessage (event) {
     var json, args
@@ -76,7 +77,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function onclose (event) {
-    delete clients[sock.id]
+    delete clients[events.id]
     listeners.emit('close', event)
   }
 
@@ -116,7 +117,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
     if (!Array.isArray(rooms[room])) {
       rooms[room] = []
     }
-    rooms[room].push(sock.id)
+    rooms[room].push(events.id)
   }
 
   function leave (room) {
@@ -124,7 +125,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
       return
     }
 
-    const index = rooms[room].indexOf(sock.id)
+    const index = rooms[room].indexOf(events.id)
     if (index > -1) {
       rooms[room].splice(index, 1)
     }
@@ -132,7 +133,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
 
   function leaveAll () {
     Object.keys(rooms).map(room => {
-      const index = rooms[room].indexOf(sock.id)
+      const index = rooms[room].indexOf(events.id)
       if (index > -1) {
         rooms[room].splice(index, 1)
       }
@@ -178,6 +179,8 @@ module.exports = function wsEvents (sock, middlewares = []) {
   // Generamos un id para el socket solo si estamos en el servidor y guardamos el socket como cliente, en el cliente no es necesario
   if (typeof module !== 'undefined' && module.exports) {
     
+    console.log('[ws-events] Se ha conectado un nuevo usuario')
+
     let found = false
     while (!found) {
       const id = uuidv4()
@@ -185,8 +188,10 @@ module.exports = function wsEvents (sock, middlewares = []) {
         found = true
         events.id = id
         clients[id] = events
+        mySocketId = id
       }
     }
+
   }
 
   return events
