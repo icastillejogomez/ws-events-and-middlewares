@@ -88,6 +88,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
   sock.onclose = onclose
 
   function emit (type) {
+    console.log('DEGUG LOG: emit')
     var args = Array.prototype.slice.call(arguments, 1)
     whenOpen(function () {
       // Comprobamos si este mensaje lleva callback de vuelta
@@ -157,8 +158,8 @@ module.exports = function wsEvents (sock, middlewares = []) {
         const args = Array.from(arguments)
         if (!Array.isArray(rooms[room])) { return }
         rooms[room].map(socketId => {
-          console.log('Emitiendo mensaje el socket ' + socketId + 'por estar en la sala ' + room)
-          clients[socketId].emit.apply(clients[socketId], args)
+          console.log('Emitiendo mensaje el socket ' + socketId + ' por estar en la sala ' + room)
+          clients[socketId].emit(args)
         })
       }
     }
