@@ -6,7 +6,7 @@ El problema de esta libreria es la integración con React Native y Socket.io-cli
 
 Cuando te planteas migrar todo el código hecho en Socket.io a la libreria ws 'nativa' te encuentras con el dilema de la gestión del eventos y la escasa versatilidad que te ofrece tener un único evento 'message' para comunicarte con tus cliente.
 
-# Construyendo un servidor websockets con ws
+## Construyendo un servidor websockets con ws
 
 ```js
 // Importamos la libreria de ws
@@ -26,5 +26,25 @@ wss.on('connection', function connection(ws) {
   // Enviamos un mensaje de Ready para indicar al cliente que estamos listos para comunicarnos con el
   ws.send('ready')
 })
+```
 
+## Contruyendo la conexión desde el cliente
+
+```js
+
+// Importamos la libreria de ws
+const WebSocket = require('ws');
+ 
+// Nos conectamos a nuestro servidor websocket en el puerto 3000
+const ws = new WebSocket('ws://www.host.com:3000/path');
+
+// Cuando la conexión este lista y abierta
+ws.on('open', function open() {
+  ws.send('Hola servidor!') // Enviamos un mensaje al servidor
+})
+
+// Cuando recibamos un mensaje del servidor
+ws.on('message', function incoming(data) {
+  console.log(data) // Imprimimos lo que el servidor nos este enviando
+})
 ```
