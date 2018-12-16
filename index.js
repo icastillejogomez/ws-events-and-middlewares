@@ -1,5 +1,4 @@
 const Emitter = require('component-emitter')
-const uuidv4 = require('uuid/v4')
 
 callbackCounter = 0
 
@@ -8,7 +7,6 @@ isFunction = function (obj) {
 }
 
 let callbacks = {}
-let clients = {}
 
 module.exports = function wsEvents (sock, middlewares = []) {
   var listeners = new Emitter()
@@ -56,18 +54,6 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function onopen () {
-    // Generamos un id aleatorio
-    let found = false
-    while(!found) {
-      const id = uuidv4()
-      // Si no existe ningun cliente con este id lo guardamos
-      if (!clients[id]) {
-        found = true
-        sock.id = id
-        clients[id] = sock // Guardamos el cliente en 'la base de datos'
-      }
-    }
-
     // Procesamos todos los eventos pendientes emitidos antes de estar realemnte conectados
     onopenHandlers.forEach(function (fn) {
       fn()
@@ -87,8 +73,6 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function onclose (event) {
-    // Eliminamos el cliente de 'la base de datos'
-    delete clients[sock.id]
     listeners.emit('close', event)
   }
 
