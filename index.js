@@ -74,7 +74,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function onclose (event) {
-    // TODO: sacamos el cliente 
+    // TODO: sacamos el cliente
     listeners.emit('close', event)
   }
 
@@ -115,7 +115,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
     if (!Array.isArray(rooms[room])) {
       rooms[room] = []
     }
-    rooms[room].push(socket.id)
+    rooms[room].push(sock.id)
 
     console.log('rooms:')
     console.log(JSON.stringify(rooms, null, 2))
@@ -124,10 +124,10 @@ module.exports = function wsEvents (sock, middlewares = []) {
   function leave (room) {
     console.log(`[ws-events] leave: ${room}`)
     if (!Array.isArray(rooms[room])) {
-      return 
+      return
     }
 
-    const index = rooms[room].indexOf(socket.id)
+    const index = rooms[room].indexOf(sock.id)
     if (index > -1) {
       rooms[room].splice(index, 1)
     }
@@ -138,7 +138,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
   function leaveAll () {
     console.log(`[ws-events] leaveAll`)
     Object.keys(rooms).map(room => {
-      const index = rooms[room].indexOf(socket.id)
+      const index = rooms[room].indexOf(sock.id)
       if (index > -1) {
         rooms[room].splice(index, 1)
       }
@@ -148,7 +148,6 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function to (room) {
-
     return {
       emit: function () {
 
@@ -157,7 +156,6 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   var events = Object.create(sock)
-  events.socket = sock
   events.emit = emit
   events.on = on
   events.off = off
@@ -170,4 +168,3 @@ module.exports = function wsEvents (sock, middlewares = []) {
 
   return events
 }
-
