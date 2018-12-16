@@ -66,9 +66,23 @@ Por otra parte tampoco tenemos gestión de callbacks y nos vemos obligado a espe
 
 Para solucionar estos problemas podemos implementar la libreria ligera de este repositorio:
 
-## Construyendo el servidor
+## Instalando ws-events-and-middlewares
+
+```js
+  npm install ws-events-and-middlewares --save
+```
+
+o
+
+```js
+  yarn install ws-events-and-middlewares --save
+```
+
+## Construyendo el servidor con eventos
 
 ## Construyendo el cliente
+
+## Construyendo el servidor con eventos y middlewares
 
 
 ### TODO list
