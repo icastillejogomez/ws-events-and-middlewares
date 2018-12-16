@@ -1,4 +1,5 @@
 const Emitter = require('component-emitter')
+const uuidv4 = require('uuid/v4')
 
 callbackCounter = 0
 
@@ -157,6 +158,10 @@ module.exports = function wsEvents (sock, middlewares = []) {
     }
   }
 
+  function clients () {
+    return clients
+  }
+
   var events = Object.create(sock)
   events.emit = emit
   events.on = on
@@ -168,9 +173,21 @@ module.exports = function wsEvents (sock, middlewares = []) {
   events.leaveAll = leaveAll
   events.to = to
   events.toAll = toAll
+  events.clients = clients
 
-  // Guardamos el nuevo cliente
-  clients[sock.id] = events
+  // Generamos un id para el socket solo si estamos en el servidor y guardamos el socket como cliente, en el cliente no es necesario
+  if (typeof module !== 'undefined' && module.exports) {
+    
+    let found = false
+    while (!found) {
+      const id = uuidv4()
+      if (!clients[id]) {
+        found = true
+        events.id = id
+        clients[id] = events
+      }
+    }
+  }
 
   return events
 }
