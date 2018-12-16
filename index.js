@@ -8,10 +8,14 @@ isFunction = function (obj) {
 
 let callbacks = {}
 let rooms = {}
+let clients = {}
 
 module.exports = function wsEvents (sock, middlewares = []) {
   var listeners = new Emitter()
   var onopenHandlers = []
+
+  // Guardamos el nuevo cliente
+  clients[sock.id] = sock
 
   async function onmessage (event) {
     var json, args
@@ -74,7 +78,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function onclose (event) {
-    // TODO: sacamos el cliente
+    if (clients[sock.id]) delete clients[sock.id]
     listeners.emit('close', event)
   }
 
@@ -150,7 +154,12 @@ module.exports = function wsEvents (sock, middlewares = []) {
   function to (room) {
     return {
       emit: function () {
-
+        const args = Array.from(arguments)
+        if (!Array.isArray(rooms[room])) { return }
+        rooms[room].map(socketId => {
+          console.log('Emitiendo mensaje el socket ' + socketId + 'por estar en la sala ' + room)
+          clients[socketId].emit.apply(clients[socketId], args)
+        })
       }
     }
   }
