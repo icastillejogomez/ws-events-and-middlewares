@@ -14,9 +14,6 @@ module.exports = function wsEvents (sock, middlewares = []) {
   var listeners = new Emitter()
   var onopenHandlers = []
 
-  // Guardamos el nuevo cliente
-  clients[sock.id] = sock
-
   async function onmessage (event) {
     var json, args
     try {
@@ -121,9 +118,6 @@ module.exports = function wsEvents (sock, middlewares = []) {
       rooms[room] = []
     }
     rooms[room].push(sock.id)
-
-    console.log('rooms:')
-    console.log(JSON.stringify(rooms, null, 2))
   }
 
   function leave (room) {
@@ -136,8 +130,6 @@ module.exports = function wsEvents (sock, middlewares = []) {
     if (index > -1) {
       rooms[room].splice(index, 1)
     }
-    console.log('rooms:')
-    console.log(JSON.stringify(rooms, null, 2))
   }
 
   function leaveAll () {
@@ -148,8 +140,6 @@ module.exports = function wsEvents (sock, middlewares = []) {
         rooms[room].splice(index, 1)
       }
     })
-    console.log('rooms:')
-    console.log(JSON.stringify(rooms, null, 2))
   }
 
   function to (room) {
@@ -175,6 +165,11 @@ module.exports = function wsEvents (sock, middlewares = []) {
   events.leave = leave
   events.leaveAll = leaveAll
   events.to = to
+
+    // Guardamos el nuevo cliente
+  clients[sock.id] = events
+  console.log('Nuevo cliente conectado:')
+  console.log(JSON.stringify(clients))
 
   return events
 }
