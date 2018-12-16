@@ -69,7 +69,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function onclose (e) {
-    listeners.emit('close', e)
+    listeners.emit('close', e.code, e.reason)
   }
 
   sock.onmessage = onmessage
