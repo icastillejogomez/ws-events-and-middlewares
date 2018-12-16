@@ -69,7 +69,6 @@ module.exports = function wsEvents (sock, middlewares = []) {
       fn()
     })
     onopenHandlers = [] // Limpiamos los eventos pendientes
-    clients[sock.id] = sock
     listeners.emit('open')
   }
 
@@ -187,7 +186,13 @@ module.exports = function wsEvents (sock, middlewares = []) {
   events.leaveAll = leaveAll
   events.to = to
   events.toAll = toAll
-  events.clients = clients
+  events.clients = 
+
+  // Guarados el nuevo cliente
+  if (sock.id) {
+    clients[sock.id] = sock
+  }
+  
 
   return events
 }
