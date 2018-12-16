@@ -50,7 +50,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function onerror (err) {
-    listeners.emit('error')
+    listeners.emit('error', err)
   }
 
   function onopen () {
@@ -69,7 +69,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function onclose (e) {
-    listeners.emit('close', e.code, e.reason)
+    listeners.emit('close', e)
   }
 
   sock.onmessage = onmessage
