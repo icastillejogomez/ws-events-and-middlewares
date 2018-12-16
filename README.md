@@ -6,6 +6,8 @@ El problema de esta libreria es la integración con React Native y Socket.io-cli
 
 Cuando te planteas migrar todo el código hecho en Socket.io a la libreria ws 'nativa' te encuentras con el dilema de la gestión del eventos y la escasa versatilidad que te ofrece tener un único evento 'message' para comunicarte con tus cliente.
 
+Veamos un ejemplo del uso de ws sin la libreria de este repositorio:
+
 ## Construyendo un servidor websockets con ws
 
 ```js
@@ -48,3 +50,28 @@ ws.on('message', function incoming(data) {
   console.log(data) // Imprimimos lo que el servidor nos este enviando
 })
 ```
+
+El problema que se nos presenta aquí en oposición a la libreria de Socket.io es que no tenemos forma de modificar el 'tipo' de mensaje que enviamos y estamos obligados a tomar medidas del tipo:
+
+```js
+{
+  type: 'GET_CONNECTED_USERS', // Tipo de mensaje que enviamos
+  payload: {
+    bar: 'foo'
+  }
+}
+```
+
+Por otra parte tampoco tenemos gestión de callbacks y nos vemos obligado a esperar recibir un mensaje de respuesta.
+
+Para solucionar estos problemas podemos implementar la libreria de este repositorio:
+
+## Construyendo el servidor
+
+## Construyendo el cliente
+
+
+### TODO list
+
+1. Manage all socket clients and set unique identifier for each of them.
+2. Rooms feature
