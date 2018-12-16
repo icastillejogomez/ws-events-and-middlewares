@@ -69,6 +69,8 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function onclose (e) {
+    console.log('Onclose Arguments:')
+    console.log(arguments)
     listeners.emit('close', e)
   }
 
