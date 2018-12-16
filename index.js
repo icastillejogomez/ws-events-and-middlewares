@@ -73,6 +73,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
       fn()
     })
     onopenHandlers = [] // Limpiamos los eventos pendientes
+    listeners.emit('open')
   }
 
   function whenOpen (fn) {
