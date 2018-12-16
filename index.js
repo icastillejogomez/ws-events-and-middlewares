@@ -145,7 +145,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
   function to (room) {
     return {
       emit: function () {
-        const args = Array.from(arguments)
+        const args = arguments
         if (!Array.isArray(rooms[room])) { return }
         rooms[room].map(socketId => {
           console.log('Emitiendo mensaje el socket ' + socketId + ' por estar en la sala ' + room)
