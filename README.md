@@ -1,91 +1,30 @@
 # ws-events
 
-Minimal Events for WebSockets.
+Esta libreria esta concebida como un wrapper del modulo ws de node. Seguro que muchos de vosotros cuando usásteis la tecnología de websocket por primera vez lo hicísteis a traves de la maravillosa libreria de Socket.io
 
-## Example
+El problema de esta libreria es la integración con React Native y Socket.io-client (version portable del cliente de Socket.io) ya que Socket.io no ha dado soporte propio para React Native.
 
-`ws-events` decorates a WebSocket instance. It works in node.js and in
-the browser with [browserify](https://browserify.org).
+Cuando te planteas migrar todo el código hecho en Socket.io a la libreria ws 'nativa' te encuentras con el dilema de la gestión del eventos y la escasa versatilidad que te ofrece tener un único evento 'message' para comunicarte con tus cliente.
 
-On the server side:
+# Construyendo un servidor websockets con ws
 
 ```js
-const wsEvents = require('ws-events')
-const Server = require('ws').Server
+// Importamos la libreria de ws
+const WebSocket = require('ws')
 
-const wss = new Server()
-wss.on('connection', (ws) => {
-  const events = wsEvents(ws)
-  events.emit('hello', {
-    any: 'json'
+// Iniciamos un servidor websocket en el puerto 3000
+const wss = new WebSocket.Server({ port: 3000 })
+
+// Escuchamos el evento connection para detectar cuando se conecta un cliente
+wss.on('connection', function connection(ws) {
+
+  // Escuchamos el evento message para detectar cuando nos envian un mensaje (no podemos cambiar el nombre del evento)
+  ws.on('message', function (message) {
+    console.log('Mensaje recibido: %s', message)
   })
-
-  events.on('world', (arg) => {
-    console.log(arg)
-  })
+ 
+  // Enviamos un mensaje de Ready para indicar al cliente que estamos listos para comunicarnos con el
+  ws.send('ready')
 })
+
 ```
-
-On the client side:
-
-```js
-const wsEvents = require('ws-events')
-const ws = wsEvents(new WebSocket('ws://localhost'))
-
-ws.on('hello', (data) => {
-  // data.any === 'json'
-  ws.emit('world', 'Hello from a browser \\o')
-})
-```
-
-## API
-
-### events = wsEvents(socket)
-
-Create a `ws-events` emitter. The emitter _wraps_ the passed-in socket, so all
-native WebSocket methods can still be used.
-
-`socket` is a standard WebSocket instance.
-
-```js
-const socket = wsEvents(new WebSocket(...))
-socket.addEventListener('open', () => {
-  // Using a ws-events method.
-  socket.emit('ya ya')
-  // Using a native method.
-  socket.close()
-})
-```
-
-### events.on(eventName, cb): this
-
-Register an event handler.
-
-### events.off(eventName, cb): this
-
-Remove an event handler.
-
-### events.off(eventName): this
-
-Remove all handlers for the given event.
-
-### events.off(): this
-
-Remove all handlers for all events.
-
-### events.emit(eventName, ...arguments): this
-
-Emit an event. When emitting on the server, the handlers on the client will
-fire. When emitting on the client, the handlers on the server will fire.
-
-### events.hasListeners(eventName): bool
-
-Check if there are any handlers for an event.
-
-### events.listeners(eventName): Array&lt;function>
-
-Return the listeners for an event.
-
-## License
-
-[MIT](./LICENSE).
