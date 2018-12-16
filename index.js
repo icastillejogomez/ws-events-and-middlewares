@@ -54,6 +54,13 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function onerror (err) {
+    delete clients[mySocketId]
+    Object.keys(rooms).map(room => {
+      const index = rooms[room].indexOf(mySocketId)
+      if (index > -1) {
+        rooms[room].splice(index, 1)
+      }
+    })
     listeners.emit('error', err)
   }
 
@@ -78,6 +85,12 @@ module.exports = function wsEvents (sock, middlewares = []) {
 
   function onclose (event) {
     delete clients[mySocketId]
+    Object.keys(rooms).map(room => {
+      const index = rooms[room].indexOf(mySocketId)
+      if (index > -1) {
+        rooms[room].splice(index, 1)
+      }
+    })
     listeners.emit('close', event)
   }
 
