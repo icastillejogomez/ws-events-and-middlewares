@@ -186,7 +186,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
 
   // Guarados el nuevo cliente
   if (sock.id) {
-    clients[sock.id] = sock
+    clients[sock.id] = events
   }
   
   return events

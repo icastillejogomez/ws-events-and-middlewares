@@ -1,6 +1,6 @@
 {
   "name": "ws-events-and-middlewares",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "ws module wrapper to provide events",
   "main": "index.js",
   "scripts": {
