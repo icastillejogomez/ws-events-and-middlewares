@@ -1,6 +1,6 @@
 {
   "name": "ws-events-and-middlewares",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "ws module wrapper to provide events",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/icastillejogomez/ws-events#readme",
   "dependencies": {
-    "component-emitter": "^1.2.1"
+    "component-emitter": "^1.2.1",
+    "uuid": "^3.3.2"
   }
 }

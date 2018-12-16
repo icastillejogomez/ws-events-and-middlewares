@@ -1,4 +1,5 @@
-var Emitter = require('component-emitter')
+const Emitter = require('component-emitter')
+const uuidv4 = require('uuid/v4')
 
 callbackCounter = 0
 
@@ -7,6 +8,7 @@ isFunction = function (obj) {
 }
 
 let callbacks = {}
+let clients = {}
 
 module.exports = function wsEvents (sock, middlewares = []) {
   var listeners = new Emitter()
@@ -54,24 +56,39 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function onopen () {
+    // Generamos un id aleatorio
+    let found = false
+    while(!found) {
+      const id = uuidv4()
+      // Si no existe ningun cliente con este id lo guardamos
+      if (!clients[id]) {
+        found = true
+        sock.id = id
+        clients[id] = sock // Guardamos el cliente en 'la base de datos'
+      }
+    }
+
+    // Procesamos todos los eventos pendientes emitidos antes de estar realemnte conectados
     onopenHandlers.forEach(function (fn) {
       fn()
     })
-    onopenHandlers = []
+    onopenHandlers = [] // Limpiamos los eventos pendientes
   }
 
   function whenOpen (fn) {
+    // Comprobamos si estamos realmente conectados y ejecutamos la funcion dada
     if (sock.readyState === sock.constructor.OPEN) {
       fn()
     } else {
+      // Si no estamos realmente conectados guardamos la funcion a ejecutar para lanzarla cuadno nos volvamos a conectar
       onopenHandlers.push(fn)
     }
   }
 
-  function onclose (e) {
-    console.log('Onclose Arguments:')
-    console.log(arguments)
-    listeners.emit('close', e)
+  function onclose (event) {
+    // Eliminamos el cliente de 'la base de datos'
+    delete clients[sock.id]
+    listeners.emit('close', event)
   }
 
   sock.onmessage = onmessage
