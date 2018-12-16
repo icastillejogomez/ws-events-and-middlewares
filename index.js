@@ -75,7 +75,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function onclose (event) {
-    if (clients[sock.id]) delete clients[sock.id]
+    delete clients[sock.id]
     listeners.emit('close', event)
   }
 
@@ -113,7 +113,6 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function join (room) {
-    console.log(`[ws-events] join: ${room}`)
     if (!Array.isArray(rooms[room])) {
       rooms[room] = []
     }
@@ -121,7 +120,6 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function leave (room) {
-    console.log(`[ws-events] leave: ${room}`)
     if (!Array.isArray(rooms[room])) {
       return
     }
@@ -133,7 +131,6 @@ module.exports = function wsEvents (sock, middlewares = []) {
   }
 
   function leaveAll () {
-    console.log(`[ws-events] leaveAll`)
     Object.keys(rooms).map(room => {
       const index = rooms[room].indexOf(sock.id)
       if (index > -1) {
@@ -147,10 +144,16 @@ module.exports = function wsEvents (sock, middlewares = []) {
       emit: function () {
         const args = Array.from(arguments)
         if (!Array.isArray(rooms[room])) { return }
-        rooms[room].map(socketId => {
-          console.log('Emitiendo mensaje el socket ' + socketId + ' por estar en la sala ' + room)
-          clients[socketId].emit.apply(clients[socketId], args)
-        })
+        rooms[room].map(socketId => clients[socketId].emit.apply(clients[socketId], args))
+      }
+    }
+  }
+
+  function toAll () {
+    return {
+      emit: function () {
+        const args = Array.from(arguments)
+        Object.keys(clients).map(socketId => clients[socketId].emit.apply(clients[socketId], args) )
       }
     }
   }
@@ -165,11 +168,10 @@ module.exports = function wsEvents (sock, middlewares = []) {
   events.leave = leave
   events.leaveAll = leaveAll
   events.to = to
+  events.toAll = toAll
 
-    // Guardamos el nuevo cliente
+  // Guardamos el nuevo cliente
   clients[sock.id] = events
-  console.log('Nuevo cliente conectado:')
-  console.log(JSON.stringify(clients))
 
   return events
 }
