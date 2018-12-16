@@ -62,9 +62,9 @@ El problema que se nos presenta aquí en oposición a la libreria de Socket.io e
 }
 ```
 
-Por otra parte tampoco tenemos gestión de callbacks y nos vemos obligado a esperar recibir un mensaje de respuesta.
+Por otra parte tampoco tenemos gestión de callbacks y nos vemos obligado a esperar recibir un mensaje de respuesta. Como tampoco tenemos gestión para middleware.
 
-Para solucionar estos problemas podemos implementar la libreria de este repositorio:
+Para solucionar estos problemas podemos implementar la libreria ligera de este repositorio:
 
 ## Construyendo el servidor
 
