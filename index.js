@@ -30,7 +30,7 @@ module.exports = function wsEvents (sock, middlewares = []) {
       // Procesamos todos los middlewares por ser un mensaje de ida
       try {
         for (let i = 0; i < middlewares.length; i++) {
-          await middlewares[i].apply(this, [sock])
+          await middlewares[i].apply(this, [events])
         }
       } catch (e) {
         console.error('Websocket middleware error:')
