@@ -41,9 +41,10 @@ module.exports = function wsEvents (sock, middlewares = []) {
       // Enviamos el mensaje
       args = [json.t].concat(json.a)
       if (json.c) {
-        args = args.concat(function () {
+        args = args.concat(function () { // <-- Esta es la funcion que van a ejecutar como callback para que nosotros se la enviemos al otro lado
+          let callbackArgs = arguments // Nos quedamos con los parametros de la callback
           whenOpen(function() {
-            sock.send(JSON.stringify({ callback: json.c, a: Array.from(arguments) }))
+            sock.send(JSON.stringify({ callback: json.c, a: Array.from(callbackArgs) }))
           })
         })
       }
