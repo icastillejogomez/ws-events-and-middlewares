@@ -42,8 +42,9 @@ module.exports = function wsEvents (sock, middlewares = []) {
       args = [json.t].concat(json.a)
       if (json.c) {
         args = args.concat(function () {
-          // TODO: check first if sock is OPEN state
-          sock.send(JSON.stringify({ callback: json.c, a: Array.from(arguments) }))
+          whenOpen(function() {
+            sock.send(JSON.stringify({ callback: json.c, a: Array.from(arguments) }))
+          })
         })
       }
     } catch (e) {
