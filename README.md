@@ -80,11 +80,22 @@ o
 
 ## Construyendo el servidor con eventos
 
+Nota: La librería esta 100% operativa aun que no exista ejemplo del código en esta sección.
+
 ## Construyendo el cliente
+
+Nota: La librería esta 100% operativa aun que no exista ejemplo del código en esta sección.
+
 
 ## Construyendo el servidor con eventos y middlewares
 
+Nota: La librería esta 100% operativa aun que no exista ejemplo del código en esta sección.
+
+
 ## Construyendo el servidor con eventos, middlewares y salas de broadcast
+
+Nota: La librería esta 100% operativa aun que no exista ejemplo del código en esta sección.
+
 
 ### TODO list
 
