@@ -99,6 +99,7 @@ Nota: La librería esta 100% operativa aun que no exista ejemplo del código en 
 
 ### TODO list
 
-- [ ]  Adaptar la libreria al módulo de Redis para hacer broadcast "nativo" 
-- [ ]  Crear test para el módulo
+- [ ] Adaptar la libreria al módulo de Redis para hacer broadcast "nativo" 
+
+- [ ] Crear test para el módulo
 
